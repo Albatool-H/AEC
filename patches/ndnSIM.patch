@@ -1,0 +1,61 @@
+--- a/NFD/daemon/fw/strategy.hpp
++++ b/NFD/daemon/fw/strategy.hpp
+@@ -126,6 +126,12 @@
+   rejectPendingInterest(shared_ptr<pit::Entry> pitEntry);
+ 
+ protected: // accessors
++  Forwarder&
++  getForwarder()
++  {
++    return m_forwarder;
++  }
++
+   MeasurementsAccessor&
+   getMeasurements();
+ 
+--- a/ndn-cxx/src/encoding/block-helpers.hpp
++++ b/ndn-cxx/src/encoding/block-helpers.hpp
+@@ -27,6 +27,7 @@
+ #include "../util/concepts.hpp"
+ 
+ #include <iterator>
++#include <boost/mpl/if.hpp>
+ 
+ namespace ndn {
+ namespace encoding {
+--- a/ndn-cxx/src/face.hpp
++++ b/ndn-cxx/src/face.hpp
+@@ -36,11 +36,7 @@
+ #include "security/identity-certificate.hpp"
+ #endif // NDN_FACE_KEEP_DEPRECATED_REGISTRATION_SIGNING
+ 
+-namespace boost {
+-namespace asio {
+-class io_service;
+-}
+-}
++#include <boost/asio/io_service.hpp>
+ 
+ namespace ndn {
+ 
+--- a/ndn-cxx/src/transport/stream-transport.hpp
++++ b/ndn-cxx/src/transport/stream-transport.hpp
+@@ -332,7 +332,7 @@
+ 
+       // typename boost::asio::ip::basic_resolver< Protocol > resolver;
+       shared_ptr<typename Protocol::resolver> resolver =
+-        make_shared<typename Protocol::resolver>(ref(this->m_socket.get_io_service()));
++        make_shared<typename Protocol::resolver>(static_cast<boost::asio::io_service&>(this->m_socket.get_executor().context()));
+ 
+       resolver->async_resolve(query, bind(&Impl::resolveHandler, this, _1, _2, resolver));
+     }
+--- a/ndn-cxx/src/util/face-uri.hpp
++++ b/ndn-cxx/src/util/face-uri.hpp
+@@ -29,6 +29,7 @@
+ #define NDN_UTIL_FACE_URI_HPP
+ 
+ #include "../common.hpp"
++#include <boost/asio/io_service.hpp>
+ #include <boost/asio/ip/udp.hpp>
+ #include <boost/asio/ip/tcp.hpp>
+ #include <boost/asio/local/stream_protocol.hpp>
