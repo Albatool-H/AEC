@@ -3,9 +3,9 @@
 ndnSIM implementation of AEC and five baseline caching schemes (LCE, LCD,
 ProbCache, Btw, PoolCache) from:
 
-A. A. Alhawas, S. Al-Ahmadi, and A. Gazdar, "Adaptive Edge Caching and Routing
-in Named Data Networking of Things Using Contextual Bandits and SDN
-Controllers," *IEEE Access*, 2026.
+A. A. Alhawas, S. Al-Ahmadi and A. Gazdar, "Adaptive Edge Caching and Routing in Named Data Networking of Things Using Contextual Bandits and SDN Controllers," in IEEE Access, doi: 10.1109/ACCESS.2026.3745640.
+
+Runnable Code Ocean capsule: https://doi.org/10.24433/CO.0701423.v1
 
 Requires Ubuntu 20.04 and ndnSIM 2.1.
 
